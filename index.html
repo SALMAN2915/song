@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="player-container">
+        <img id="song-image" class="song-image" src="" alt="Song Image">
+        <h2 id="song-title">Song Title</h2>
+        <audio id="audio-player"></audio>
+        <div class="time-display">
+            <span id="current-time">00:00</span> / <span id="total-duration">00:00</span>
+        </div>
+        <input type="range" id="song-slider" min="0" max="100" step="1" value="0">
+        <div class="controls">
+            <button id="prev-btn">Prev</button>
+            <button id="play-pause-btn">Play</button>
+            <button id="next-btn">Next</button>
+        </div>
+        <div class="volume-controls">
+            <label for="volume-slider">Volume:</label>
+            <div class="volume-container">
+                <button id="volume-down">-</button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                <button id="volume-up">+</button>
+            </div>
+            <span id="volume-percentage">50%</span>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
