@@ -1,4 +1,18 @@
-// Hardcoded song list
+const audioPlayer = document.getElementById('audio-player');
+const playPauseBtn = document.getElementById('play-pause');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const volumeControl = document.getElementById('volume');
+const volumePercentage = document.getElementById('volume-percentage');
+const autoplayToggle = document.getElementById('autoplay');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
+const progressBar = document.getElementById('progress-bar');
+const songImage = document.getElementById('song-image');
+const songTitle = document.getElementById('song-title');
+const searchBar = document.getElementById('search-bar');
+const searchResults = document.getElementById('search-results');
+
 const songs = [
     { title: "Aasan Nahin Yahan", src: "./songs/song1.mp3", image: "./songs/song1.jpg" },
     { title: "Aashiqui (The Love Theme)", src: "./songs/song2.mp3", image: "./songs/song2.jpg" },
@@ -6,130 +20,122 @@ const songs = [
     { title: "Chahun Main Ya Naa", src: "./songs/song4.mp3", image: "./songs/song4.jpg" },
     { title: "Sajni", src: "./songs/song5.mp3", image: "./songs/song5.jpg" },
     { title: "Aaj Se Teri", src: "./songs/song6.mp3", image: "./songs/song6.jpg" }
-
 ];
 
 let currentSongIndex = 0;
+let isPlaying = false;
 
-// DOM Elements
-const audioPlayer = document.getElementById("audio-player");
-const songImage = document.getElementById("song-image");
-const songTitle = document.getElementById("song-title");
-const songSlider = document.getElementById("song-slider");
-const playPauseBtn = document.getElementById("play-pause-btn");
-const prevBtn = document.getElementById("prev-btn");
-const nextBtn = document.getElementById("next-btn");
-const volumeSlider = document.getElementById("volume-slider");
-const volumeUpBtn = document.getElementById("volume-up");
-const volumeDownBtn = document.getElementById("volume-down");
-const volumePercentage = document.getElementById("volume-percentage");
-const currentTimeDisplay = document.getElementById("current-time");
-const totalDurationDisplay = document.getElementById("total-duration");
-
-// Load a specific song
 function loadSong(index) {
     const song = songs[index];
-    songTitle.textContent = song.title;
-    songImage.src = song.image || "./default.jpg"; // Fallback image
     audioPlayer.src = song.src;
+    songImage.src = song.image;
+    songTitle.textContent = song.title;
     audioPlayer.load();
 }
 
-// Play/Pause Song
-function playPauseSong() {
-    if (audioPlayer.paused) {
-        audioPlayer.play();
-        playPauseBtn.textContent = "Pause";
-    } else {
-        audioPlayer.pause();
-        playPauseBtn.textContent = "Play";
-    }
-}
-
-// Play Next Song
-function playNextSong() {
-    currentSongIndex = (currentSongIndex + 1) % songs.length;
-    loadSong(currentSongIndex);
+function playSong() {
     audioPlayer.play();
-    playPauseBtn.textContent = "Pause";
+    isPlaying = true;
+    playPauseBtn.textContent = 'Pause';
 }
 
-// Play Previous Song
-function playPrevSong() {
+function pauseSong() {
+    audioPlayer.pause();
+    isPlaying = false;
+    playPauseBtn.textContent = 'Play';
+}
+
+function updateTimers() {
+    const currentMinutes = Math.floor(audioPlayer.currentTime / 60);
+    const currentSeconds = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
+    const durationMinutes = Math.floor(audioPlayer.duration / 60);
+    const durationSeconds = Math.floor(audioPlayer.duration % 60).toString().padStart(2, '0');
+
+    currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+    durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+
+    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressBar.value = progress;
+}
+
+function setProgress(e) {
+    const width = progressBar.offsetWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+
+    audioPlayer.currentTime = (clickX / width) * duration;
+}
+
+function updateVolume() {
+    audioPlayer.volume = volumeControl.value / 100;
+    volumePercentage.textContent = `${volumeControl.value}%`;
+}
+
+function handleSearch() {
+    const query = searchBar.value.trim().toLowerCase();
+    searchResults.innerHTML = '';
+
+    if (query === '') {
+        searchResults.style.display = 'none';
+        return;
+    }
+
+    const filteredSongs = songs.filter(song => song.title.toLowerCase().includes(query));
+
+    filteredSongs.forEach((song, index) => {
+        const li = document.createElement('li');
+        li.textContent = song.title;
+        li.addEventListener('click', () => {
+            currentSongIndex = songs.indexOf(song);
+            loadSong(currentSongIndex);
+            playSong();
+            searchResults.innerHTML = '';
+            searchResults.style.display = 'none';
+        });
+        searchResults.appendChild(li);
+    });
+
+    searchResults.style.display = 'block';
+}
+
+playPauseBtn.addEventListener('click', () => {
+    isPlaying ? pauseSong() : playSong();
+});
+
+prevBtn.addEventListener('click', () => {
     currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
     loadSong(currentSongIndex);
-    audioPlayer.play();
-    playPauseBtn.textContent = "Pause";
-}
+    playSong();
+});
 
-// Adjust Volume
-function adjustVolume() {
-    audioPlayer.volume = volumeSlider.value;
-    updateVolumePercentage(audioPlayer.volume);
-}
+nextBtn.addEventListener('click', () => {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+});
 
-function increaseVolume() {
-    audioPlayer.volume = Math.min(audioPlayer.volume + 0.1, 1);
-    volumeSlider.value = audioPlayer.volume;
-    updateVolumePercentage(audioPlayer.volume);
-}
+volumeControl.addEventListener('input', updateVolume);
 
-function decreaseVolume() {
-    audioPlayer.volume = Math.max(audioPlayer.volume - 0.1, 0);
-    volumeSlider.value = audioPlayer.volume;
-    updateVolumePercentage(audioPlayer.volume);
-}
+autoplayToggle.addEventListener('change', () => {
+    audioPlayer.loop = false;
+});
 
-function updateVolumePercentage(volume) {
-    volumePercentage.textContent = `${Math.round(volume * 100)}%`;
-}
+audioPlayer.addEventListener('timeupdate', updateTimers);
 
-// Update Song Slider
-function updateSongSlider() {
-    if (!isNaN(audioPlayer.duration)) {
-        songSlider.max = audioPlayer.duration;
-        songSlider.value = audioPlayer.currentTime;
+progressBar.addEventListener('click', setProgress);
+
+audioPlayer.addEventListener('ended', () => {
+    if (autoplayToggle.checked) {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        loadSong(currentSongIndex);
+        playSong();
+    } else {
+        pauseSong();
     }
-}
+});
 
-function seekSong() {
-    audioPlayer.currentTime = songSlider.value;
-}
+searchBar.addEventListener('input', handleSearch);
 
-// Update Time Display
-function updateCurrentTime() {
-    currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
-    if (!isNaN(audioPlayer.duration)) {
-        totalDurationDisplay.textContent = formatTime(audioPlayer.duration);
-    }
-}
-
-function setTotalDuration() {
-    if (!isNaN(audioPlayer.duration)) {
-        totalDurationDisplay.textContent = formatTime(audioPlayer.duration);
-    }
-}
-
-// Format time as MM:SS
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-}
-
-// Event Listeners
-audioPlayer.addEventListener("timeupdate", updateSongSlider);
-audioPlayer.addEventListener("timeupdate", updateCurrentTime);
-audioPlayer.addEventListener("loadedmetadata", setTotalDuration);
-songSlider.addEventListener("input", seekSong);
-playPauseBtn.addEventListener("click", playPauseSong);
-nextBtn.addEventListener("click", playNextSong);
-prevBtn.addEventListener("click", playPrevSong);
-volumeSlider.addEventListener("input", adjustVolume);
-volumeUpBtn.addEventListener("click", increaseVolume);
-volumeDownBtn.addEventListener("click", decreaseVolume);
-
-// Initialize
+// Load the initial song
 loadSong(currentSongIndex);
-audioPlayer.volume = 0.5;
-updateVolumePercentage(audioPlayer.volume);
+updateVolume();
