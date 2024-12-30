@@ -8,26 +8,31 @@
 </head>
 <body>
     <div class="player-container">
-        <img id="song-image" class="song-image" src="" alt="Song Image">
-        <h2 id="song-title">Song Title</h2>
+        <h2>Song Player</h2>
+        <input type="text" id="search-bar" placeholder="Search for a song..." class="search-bar">
+        <ul id="search-results" class="search-results"></ul>
+        <img id="song-image" src="" alt="Song Image" class="song-image">
+        <h3 id="song-title">Title of the Song</h3>
         <audio id="audio-player"></audio>
-        <div class="time-display">
-            <span id="current-time">00:00</span> / <span id="total-duration">00:00</span>
+        <input type="range" id="progress-bar" value="0" class="progress-bar">
+        <div class="timing">
+            <span id="current-time">00:00</span>
+            <span id="duration">00:00</span>
         </div>
-        <input type="range" id="song-slider" min="0" max="100" step="1" value="0">
         <div class="controls">
-            <button id="prev-btn">Prev</button>
-            <button id="play-pause-btn">Play</button>
-            <button id="next-btn">Next</button>
+            <button id="prev">Previous</button>
+            <button id="play-pause">Play</button>
+            <button id="next">Next</button>
         </div>
-        <div class="volume-controls">
-            <label for="volume-slider">Volume:</label>
-            <div class="volume-container">
-                <button id="volume-down">-</button>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-                <button id="volume-up">+</button>
-            </div>
-            <span id="volume-percentage">50%</span>
+        <div class="volume-container">
+            <label for="volume">Volume: </label>
+            <input type="range" id="volume" min="0" max="100" step="1" value="100">
+            <span id="volume-percentage">100%</span>
+        </div>
+        <div class="autoplay">
+            <label>
+                <input type="checkbox" id="autoplay"> Autoplay Next
+            </label>
         </div>
     </div>
     <script src="script.js"></script>
