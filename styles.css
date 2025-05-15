@@ -1,155 +1,190 @@
+/* Root styling for smooth visuals */
+:root {
+  --bg-gradient: linear-gradient(135deg, #1f1c2c, #928dab);
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --primary: #ff4b2b;
+  --secondary: #ff416c;
+  --text-light: #f0f0f0;
+  --accent: #fff;
+  --border-radius: 20px;
+}
+
+/* Body background and layout */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #141e30, #243b55);
-  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-light);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
 }
 
+/* Player Card */
 .player {
-  background: #1c1c1c;
-  border-radius: 20px;
-  padding: 30px 20px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 30px 25px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   max-width: 400px;
+  width: 100%;
+  transition: transform 0.3s ease;
 }
 
+.player:hover {
+  transform: scale(1.015);
+}
+
+/* Banner Image */
 .banner {
   width: 100%;
-  max-width: 250px;
-  height: 250px;
-  border-radius: 20px;
+  height: auto;
+  max-height: 260px;
   object-fit: cover;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-  margin: 0 auto;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
 }
 
+/* Song Title */
 .title {
-  font-size: 1.5em;
-  margin: 15px 0;
+  font-size: 1.6em;
+  margin-bottom: 10px;
   font-weight: bold;
-}
-
-.controls,
-.volume-control {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.controls button,
-.autoplay-toggle,
-.volume-btn {
-  font-size: 1.2em;
-  background: #333;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-}
-
-.controls button:hover,
-.autoplay-toggle:hover,
-.volume-btn:hover {
-  background: #555;
-  transform: scale(1.05);
-}
-
-.time {
-  margin-top: 15px;
-  font-size: 1em;
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
-.autoplay-toggle {
-  padding: 8px 20px;
-  font-weight: bold;
+/* Time Display */
+.time {
+  font-size: 0.95em;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  opacity: 0.8;
 }
 
+/* Controls Styling */
+.controls, .volume-control {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.controls button,
+.volume-btn,
+.autoplay-toggle {
+  font-size: 1.2em;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.controls button:hover,
+.volume-btn:hover,
+.autoplay-toggle:hover {
+  background: var(--secondary);
+  transform: scale(1.1);
+}
+
+/* Volume Slider */
 .volume-slider {
   -webkit-appearance: none;
   appearance: none;
-  height: 5px;
-  background: #666;
+  width: 120px;
+  height: 6px;
+  background: #888;
   border-radius: 5px;
   outline: none;
+  cursor: pointer;
   transition: background 0.3s ease;
-  width: 100px;
 }
 
 .volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  background: white;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
   border-radius: 50%;
   cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 .volume-slider::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-  background: white;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
   border-radius: 50%;
   cursor: pointer;
 }
 
+/* Autoplay Toggle */
+.autoplay-toggle {
+  background: transparent;
+  border: 2px solid var(--primary);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  color: var(--accent);
+}
+
+.autoplay-toggle:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Gong Selector */
 .gong-list {
   margin-top: 20px;
 }
 
 .gong-list select {
-  background: #333;
-  color: white;
+  background: var(--card-bg);
+  color: var(--text-light);
+  border: 1px solid #666;
   padding: 10px;
-  border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 1em;
   cursor: pointer;
-  transition: background 0.3s ease;
+  outline: none;
+  transition: border 0.3s ease;
 }
 
 .gong-list select:hover {
-  background: #444;
+  border-color: var(--primary);
 }
 
+/* Responsive */
 @media (max-width: 480px) {
   .player {
-    padding: 20px 15px;
+    padding: 20px;
   }
 
   .banner {
-    height: 200px;
-    width: 100%;
-    max-width: 200px;
-  }
-
-  .volume-control,
-  .controls {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
+    max-height: 200px;
   }
 
   .volume-slider {
-    width: 80px;
+    width: 100px;
   }
 
   .title {
-    font-size: 1.2em;
+    font-size: 1.3em;
+  }
+
+  .controls button,
+  .volume-btn {
+    padding: 10px;
   }
 }
