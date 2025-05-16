@@ -1,40 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Song Player</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="player-container">
-        <h2>Song Player</h2>
-        <input type="text" id="search-bar" placeholder="Search for a song..." class="search-bar">
-        <ul id="search-results" class="search-results"></ul>
-        <img id="song-image" src="" alt="Song Image" class="song-image">
-        <h3 id="song-title">Title of the Song</h3>
-        <audio id="audio-player"></audio>
-        <input type="range" id="progress-bar" value="0" class="progress-bar">
-        <div class="timing">
-            <span id="current-time">00:00</span>
-            <span id="duration">00:00</span>
-        </div>
-        <div class="controls">
-            <button id="prev">Previous</button>
-            <button id="play-pause">Play</button>
-            <button id="next">Next</button>
-        </div>
-        <div class="volume-container">
-            <label for="volume">Volume: </label>
-            <input type="range" id="volume" min="0" max="100" step="1" value="100">
-            <span id="volume-percentage">100%</span>
-        </div>
-        <div class="autoplay">
-            <label>
-                <input type="checkbox" id="autoplay"> Autoplay Next
-            </label>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+/* styles.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom right, #1e1e2f, #2b2b45);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.player-container {
+    background-color: #2a2a3c;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    color: #f4f4f4;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 12px;
+    background-color: #3b3b52;
+    color: #fff;
+}
+
+.search-results {
+    list-style: none;
+    margin-bottom: 1rem;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: #383854;
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.search-results li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #555;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-results li:hover {
+    background-color: #505070;
+}
+
+.song-image {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+#song-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #ffffffcc;
+}
+
+audio {
+    display: none;
+}
+
+.progress-bar {
+    width: 100%;
+    margin: 1rem 0;
+    appearance: none;
+    height: 5px;
+    background: #555;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.progress-bar::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #888;
+}
+
+.timing {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 1rem;
+}
+
+.controls button {
+    background-color: #44445f;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    margin: 0 0.5rem;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.controls button:hover {
+    background-color: #5e5e8e;
+}
+
+.volume-container {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+#volume {
+    width: 100%;
+    margin-top: 0.3rem;
+    cursor: pointer;
+}
+
+#volume-percentage {
+    display: inline-block;
+    margin-top: 0.3rem;
+}
+
+.autoplay {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+input[type="checkbox"] {
+    accent-color: #5e5e8e;
+}
